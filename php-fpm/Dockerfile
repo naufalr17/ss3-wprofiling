@@ -19,7 +19,6 @@ RUN install_packages \
     php7.4-common \
     php7.4-dev \
     php7.4-opcache \
-    php-redis \
     openssl \
     nano \
     graphicsmagick \
@@ -28,8 +27,19 @@ RUN install_packages \
     iputils-ping \
     locales \
     sqlite3
-    
 
+RUN apt-get update && apt-get install -y \
+    make \
+    gcc \
+    g++ \
+    autoconf \
+    build-essential \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+    
+# RUN apt-get install php-redis
+RUN pecl install redis
+RUN echo "extension=redis.so" > /opt/bitnami/php/etc/conf.d/99-redis.ini
 # RUN curl "https://github.com/tideways/php-xhprof-extension/archive/v5.0.2.tar.gz" -fsL -o ./php-xhprof-extension.tar.gz && \
 #     tar xf ./php-xhprof-extension.tar.gz && \
 #     cd php-xhprof-extension-5.0.2 && \

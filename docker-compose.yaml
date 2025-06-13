@@ -1,4 +1,7 @@
 services:
+
+  # Delete or comment if you dont need the nginx running on docker
+  # make sure that you adjust the nginx sites-available to use below php-fpm
   brt_ss_app:
     build:
       context: .
@@ -13,14 +16,12 @@ services:
       net.ipv4.ip_unprivileged_port_start: '0'
     volumes:
       # Mount the project root
-      # - /var/www/html/brighton:/var/www/html
-      - /c/xampp/htdocs/brighton-project:/var/www/html
+      - /var/www/html/<project>:/var/www/html
       # Mount the environment file individually into the same container path
-      # - /var/www/html/_ss_environment.php:/var/www/html/_ss_environment.php:ro
-      - /c/xampp/htdocs/_ss_environment.php:/var/www/html/_ss_environment.php:ro
+      - /var/www/html/_ss_environment.php:/var/www/html/_ss_environment.php:ro
       # Other volumes
-      # - /var/log/nginx:/var/log/nginx
-      - /c/xampp/htdocs/brighton-project/config/nginx:/etc/nginx/sites-available
+      - /var/www/html/config/nginx:/etc/nginx/sites-available
+      - /var/log/nginx:/var/log/nginx
     depends_on:
       - php_fpm7
     networks:
