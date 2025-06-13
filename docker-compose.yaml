@@ -24,8 +24,8 @@ services:
       # - /var/log/nginx:/var/log/nginx
     depends_on:
       - php_fpm7
-    networks:
-      - mynetwork
+    # networks:
+    #   - mynetwork
 
   php_fpm7:   
     build:
@@ -36,15 +36,11 @@ services:
       - /var/www/html/brighton:/var/www/html
       # Mount the environment file individually
       - /var/www/html/_ss_environment.php:/var/www/html/_ss_environment.php:ro
-    networks:
-      - mynetwork
 
   php_xhgui:
     build:
       context: .
       dockerfile: php-xhgui/Dockerfile
-    networks:
-      - mynetwork
 
   nginx_xhgui:
     build:
@@ -54,8 +50,6 @@ services:
       - 8081:80
     depends_on:
       - php_xhgui
-    networks:
-      - mynetwork
 
 networks:
   mynetwork:
