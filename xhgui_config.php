@@ -2,7 +2,7 @@
 
 return [
     'save.handler' => 'mongodb',
-    'db.host' => 'mongodb://mongo:27017',
+    'db.host' => 'mongodb://brt-profiler:G8TKUqe2E2Z5qvTk6rX8pfWlsvpCwe0q@34.1.198.183:27017/',
     'db.db' => 'xhprof',
     'db.options' => [],
     'profiler.enable' => function() {
