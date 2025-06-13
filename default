@@ -28,7 +28,7 @@ server {
                 fastcgi_busy_buffers_size 64k;
                 fastcgi_buffers 4 32k;
                 fastcgi_keep_conn on;
-                //Edit fastcgi if using php-fpm docker
+                # Edit fastcgi if using php-fpm docker
                 # fastcgi_pass php_fpm7:9000
                 fastcgi_pass 127.0.0.1:9000;
                 fastcgi_index index.php;
