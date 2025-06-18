@@ -16,16 +16,16 @@ services:
       net.ipv4.ip_unprivileged_port_start: '0'
     volumes:
       # Mount the project root
-      - /var/www/html/<project>:/var/www/html
+      - /c/xampp/htdocs/brighton-project:/var/www/html
       # Mount the environment file individually into the same container path
-      - /var/www/html/_ss_environment.php:/var/www/html/_ss_environment.php:ro
+      - /c/xampp/htdocs/_ss_environment.php:/var/www/_ss_environment.php:ro
       # Other volumes
-      - /var/www/html/ss3-wprofiling/default:/etc/nginx/sites-available/default
+      - /c/Users/mnflr/Documents/Brighton/ssv3-profiling/default:/etc/nginx/sites-available/default
       # - /var/log/nginx:/var/log/nginx
     depends_on:
       - php_fpm7
-    # networks:
-    #   - mynetwork
+    networks:
+      - mynetwork
 
   php_fpm7:   
     build:
@@ -33,14 +33,18 @@ services:
       dockerfile: php-fpm/Dockerfile
     volumes:
       # Mount the project root
-      - /var/www/html/brighton:/var/www/html
+      - /c/xampp/htdocs/brighton-project:/var/www/html
       # Mount the environment file individually
-      - /var/www/html/_ss_environment.php:/var/www/html/_ss_environment.php:ro
+      - /c/xampp/htdocs/_ss_environment.php:/var/www/_ss_environment.php:ro
+    networks:
+      - mynetwork
 
   php_xhgui:
     build:
       context: .
       dockerfile: php-xhgui/Dockerfile
+    networks:
+      - mynetwork
 
   nginx_xhgui:
     build:
@@ -50,6 +54,16 @@ services:
       - 8081:80
     depends_on:
       - php_xhgui
+    networks:
+      - mynetwork
+  mongo:
+    image: mongo:4.4.1
+    # ports:
+    #   - 27017:27017
+    # volumes:
+    #   - mongo_data:/data/db
+    networks:
+      - mynetwork
 
 networks:
   mynetwork:
