@@ -3,7 +3,10 @@ services:
   # Delete or comment if you dont need the nginx running on docker
   # make sure that you adjust the nginx sites-available to use below php-fpm
   brt_ss_app:
+    container_name: brt-master
     build:
+      args:
+        user: www-data
       context: .
       dockerfile: Dockerfile
     ports:
@@ -16,37 +19,46 @@ services:
       net.ipv4.ip_unprivileged_port_start: '0'
     volumes:
       # Mount the project root
-      - /c/xampp/htdocs/brighton-project:/var/www/html
+      - /path/to/brighton-project:/var/www/html
       # Mount the environment file individually into the same container path
-      - /c/xampp/htdocs/_ss_environment.php:/var/www/_ss_environment.php:ro
+      - /path/to/_ss_environment.php:/var/www/_ss_environment.php:ro
       # Other volumes
-      - /c/Users/mnflr/Documents/Brighton/ssv3-profiling/default:/etc/nginx/sites-available/default
+      - /path/to/default:/etc/nginx/sites-available/default
       # - /var/log/nginx:/var/log/nginx
     depends_on:
       - php_fpm7
+    restart: always
     networks:
       - mynetwork
 
   php_fpm7:   
+    container_name: php_fpm7
     build:
       context: .
       dockerfile: php-fpm/Dockerfile
     volumes:
       # Mount the project root
-      - /c/xampp/htdocs/brighton-project:/var/www/html
+      - /path/to/brighton-project:/var/www/html
       # Mount the environment file individually
-      - /c/xampp/htdocs/_ss_environment.php:/var/www/_ss_environment.php:ro
+      - /path/to/_ss_environment.php:/var/www/_ss_environment.php:ro
+    restart: always
+    environment:
+      - PHP_FPM_USER=www-data
+      - PHP_FPM_GROUP=www-data
     networks:
       - mynetwork
 
   php_xhgui:
+    container_name: php_xhgui
     build:
       context: .
       dockerfile: php-xhgui/Dockerfile
+    restart: always
     networks:
       - mynetwork
 
   nginx_xhgui:
+    container_name: nginx_xhgui
     build:
       context: .
       dockerfile: nginx-xhgui/Dockerfile
@@ -54,14 +66,16 @@ services:
       - 8081:80
     depends_on:
       - php_xhgui
+    restart: always
     networks:
       - mynetwork
+
   mongo:
-    image: mongo:4.4.1
-    # ports:
-    #   - 27017:27017
-    # volumes:
-    #   - mongo_data:/data/db
+    image: mongo:latest #use 4.4.1 if not compatible with your app
+    container_name:  mongo
+    restart: always
+    volumes:
+      -  /mongodb.conf:/etc/mongod.conf
     networks:
       - mynetwork
 

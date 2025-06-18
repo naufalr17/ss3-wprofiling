@@ -16,6 +16,17 @@ if you want to update the docker via docker compose run:
 docker compose down`
 ```
 
+Certbot command
+```bash
+sudo certbot --nginx -d yourcomain.com
+```
+
+
+Auto renew SSL using certbot
+```bash
+sudo systemctl status certbot.timer
+```
+
 [Detailed tutorial here for setting up xhgui_config.php.](https://baptiste.bouchereau.pro/tutorial/profile-php-applications-with-xhgui-and-xhprof-on-docker/)
 
 Usage
